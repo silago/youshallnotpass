@@ -1,0 +1,15 @@
+{
+  "name": "youshallnotpass",
+  "version": "0.0.0",
+  "authors": [
+    "silago <silago.nevermind@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

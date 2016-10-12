@@ -7,28 +7,84 @@ function preload() {
     game.load.image('spell',    'assets/spell.png');
     game.load.image('goblin',    'assets/goblin.png');
     game.load.spritesheet('orcs', 'assets/orc_spritesheet.png', 200, 200, 4);
+    //game.load.image('orcs', 'assets/orc_spritesheet.png');
+    
+
+    //game.load.script('player.js', 'lib/game/sprites/player.js');
 }
+
+//var Enemy = function(game,x,y,resource) {
+//    //var prototype = Object.getPrototypeOf(this);
+//    //MonsterBunny.prototype = Object.create(Phaser.Sprite.prototype);
+//    //Object.setPrototypeOf(this, ObjectCre
+//    Phaser.Sprite.call(this, game,x,y,resource);
+//    game.add.existing(this);
+//}
+
+
+Enemy = function(game,x,y,resource) {
+    Object.setPrototypeOf(this, Object.create(Phaser.Sprite.prototype));
+    Phaser.Sprite.call(this, game,x,y,resource);
+    var prototype = Object.getPrototypeOf(this);
+
+    this.add = function() {
+        game.add.existing(this);
+        //game.physics.enable(this, Phaser.Physics.ARCADE);
+        this.animations.add('walk');
+        this.animations.play('walk',2,true);
+        game.physics.enable(this, Phaser.Physics.ARCADE);
+        return this;
+    }
+
+    this.walk = function() {
+        this.body.velocity.x=50;
+        return this;
+    }
+    game.add.existing(this);
+    this.update = function() {
+        //console.log('...');
+    }
+    
+}
+//Enemy.prototype = Object.create(Phaser.Sprite.prototype);
+//Enemy.prototype.constructor  = Enemy;
+
+EnemyEmitter = function(game,interval) {
+    setInterval(function() {
+        var x = game.world.randomX;
+        var y = game.world.randomY;
+        (new Enemy(game,x,y,'orcs')).add().walk();
+    },interval);
+} 
+
+
+
+
 
 
 var weapon;
 
 function create() {
     game.add.sprite(0, 0, 'background');
-    orc = game.add.sprite(200, 200, 'orcs');
-    walk = orc.animations.add('walk');
-    orc.animations.play('walk', 30, true);
+    EnemyEmitter(game,1000*3);
+    //orc = game.add.sprite(200, 200, 'orcs');
+    //orc = new Enemy(game,200,200,'orcs');
+    //orc.add()
+    //   .walk();
+    ////game.add.existing(orc);
+    //walk = orc.animations.add('walk');
+    //orc.animations.play('walk', 30, true);
 
     enemies = game.add.group();
     bullets = game.add.group();
     bullets.enableBody = true;
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
-    game.physics.enable(orc, Phaser.Physics.ARCADE);
 
 
     weapon = game.add.weapon(1,'spell');
     weapon.bulletSpeed = 2000;
     weapon.fireRate = 20;
-    wizard = game.add.sprite(0, 0, 'wizard');
+    wizard = game.add.sprite(0, 400, 'wizard');
     wizard.can_cast = true;
     graphics = game.add.graphics(100, 100);
     //game.physics.enable(wizard, Phaser.Physics.ARCADE);
@@ -54,8 +110,8 @@ function update() {
         //graphics.moveTo(220,220);
         //graphics.lineTo(game.input.mousePointer.x, game.input.mousePointer.y);
     } else {
-        wizard.can_cast = true;
+        //wizard.can_cast = true;
     }
-    game.physics.arcade.overlap(bullets, orc, collisionHandler, null, this);
+    //game.physics.arcade.overlap(bullets, orc, collisionHandler, null, this);
 }
 
