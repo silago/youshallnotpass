@@ -15,36 +15,36 @@ var config = {
 };
 
 
-gulp.task('html', function() {  
+gulp.task('html', function() {
     return gulp.src(['*.html'])
         .pipe(gulp.dest('build'))
-        .pipe(reload({stream: true})); //И перезагрузим наш сервер для обновленийpipe(refresh(server))
+        .pipe(reload({stream: true}));
 })
 
 
-gulp.task('bower_components', function() {  
+gulp.task('bower_components', function() {
     return gulp.src(['bower_components/**/*'])
         .pipe(gulp.dest('build/src/vendor'))
-        .pipe(reload({stream: true})); //И перезагрузим наш сервер для обновленийpipe(refresh(server))
+        .pipe(reload({stream: true}));
 })
 
-gulp.task('assets', function() {  
+gulp.task('assets', function() {
     return gulp.src(['assets/***'])
         .pipe(gulp.dest('build/assets'))
-        .pipe(reload({stream: true})); //И перезагрузим наш сервер для обновленийpipe(refresh(server))
+        .pipe(reload({stream: true}));
 })
 
 
-gulp.task('scripts', function() {  
+gulp.task('scripts', function() {
     return gulp.src(['src/**.js'])
         .pipe(gulp.dest('build/src'))
-        .pipe(reload({stream: true})); //И перезагрузим наш сервер для обновленийpipe(refresh(server))
+        .pipe(reload({stream: true}));
 })
 
-gulp.task('styles', function() {  
+gulp.task('styles', function() {
     return gulp.src(['css/*'])
         .pipe(gulp.dest('build/css'))
-        .pipe(reload({stream: true})); //И перезагрузим наш сервер для обновленийpipe(refresh(server))
+        .pipe(reload({stream: true}));
 })
 
 
@@ -75,6 +75,6 @@ gulp.task('watch', function(){
 
 
 
-gulp.task('default', ['assets','bower_components','html','scripts','styles','webserver','watch'], function() {  
+gulp.task('default', ['assets','bower_components','html','scripts','styles','webserver','watch'], function() {
     //gulp.run('lr-server', 'scripts', 'styles');
 });
