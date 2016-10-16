@@ -1,12 +1,16 @@
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update, render:render });
 
 
+
+
 function preload() {
     game.load.image('background', 'assets/background.png');
     game.load.image('wizard',     'assets/wizard.png');
     game.load.image('spell',      'assets/spell.png');
     game.load.image('circle',      'assets/circle.png');
     game.load.image('goblin',     'assets/goblin.png');
+    game.load.image('eye',     'assets/eye.png');
+    game.load.image('rain',     'assets/rain.png');
     game.load.spritesheet('orcs', 'assets/orc_spritesheet.png', 200, 200, 4);
 }
 
@@ -150,16 +154,135 @@ function startDraw() {
 
 var weapon;
 var lines = [];
+var STATE_IDLE = 0;
+var STATE_DRAW = 1;
+var state = STATE_IDLE;
 function create() {
 
     ch = {
-        circle:null
+        circle:null,
+		points:[
+			{
+				instance:null,
+				x:-22,
+				y:-100-22
+			},
+			{
+				instance:null,
+				x:50+22-10,
+				y:-22-50
+			},
+			{
+				instance:null,
+				x:50+22-10,
+				y:-22+25
+			},
+			{
+				instance:null,
+				x:-22,
+				y:+50
+			},
+			{
+				instance:null,
+				x:-100+22-10,
+				y:-22-50
+			},
+			{
+				instance:null,
+				x:-100+22-10,
+				y:-22+25
+			},
+		],
+    active_points:[],
+    spells:[
+      [0,1,2]
+    ],
+    cast_spell:function() {
+        var rain = game.add.sprite(game.input.x, game.input.y, 'rain');
+
+        setInterval(function() {
+          rain.destroy();
+        },2000);
+    },
+    check_spell: function() {
+      console.log('check spell');
+      for (i in this.spells) {
+        if (this.spells[i].every(function(val,key){
+          console.log(this.active_points);
+          console.log(val);
+          return this.active_points.indexOf(val)!=-1;
+        },this)) {
+          console.log('spell done');
+          this.cast_spell();
+          break;
+        }
+      }
+    },
+    init: function() {
+        ch.circle = game.add.sprite(0, 0, 'circle');
+        this.circle.visible = false;
+        for ( i in ch.points) {
+            ch.points[i].instance = game.add.sprite(
+                ch.points[i].x,
+                ch.points[i].y,
+                'eye'
+            );
+            ch.points[i].instance.inputEnabled = true;
+            ch.points[i].instance.events.onInputOver.add(function(i){
+                return function() {
+                  var l = new Phaser.Line(game.input.x, game.input.y, 0, 0);
+                  l.width = 20;
+                  l.color  = 0x990000;
+                  lines.unshift(l);
+                  i = Number(i);
+                  if (this.active_points.indexOf(i)==-1) {
+                      this.active_points.push(i);
+                  } else {
+                    this.check_spell();
+                    this.active_points = [];
+                    this.hide();
+                    lines = [];
+                  }
+                  console.log(this.active_points);
+                }
+            }(i),this)
+        }
+        for (i in this.points) {
+            this.points[i].instance.visible = false;
+        }
+    },
+
+		hide: function() {
+					this.circle.visible = false;
+					this.points[i].instance.alpha = 0;
+					for (i in this.points) {
+						this.points[i].instance.visible = false;
+						this.points[i].instance.alpha = 0;
+					}
+		},
+		show: function() {
+            var x = game.input.x;
+            var y = game.input.y;
+            var offset = 100;
+            var eoffset = 22;
+			this.circle.visible = true;
+			this.circle.position.x = x-offset;
+			this.circle.position.y = y-offset;
+			this.circle.alpha = 1;
+			for (i in this.points) {
+				this.points[i].instance.visible = true;
+				this.points[i].instance.position.x = x+this.points[i].x;
+				this.points[i].instance.position.y = y+this.points[i].y;
+				this.points[i].instance.alpha = 1;
+				this.points[i].instance.alpha = 1;
+
+			}
+		}
     }
+	//ch.show();
 
     game.add.sprite(0, 0, 'background');
-    ch.circle = game.add.sprite(0, 0, 'circle');
-    ch.circle.visible = false;
-    ch.circle.alpha = 0;
+    ch.init();
 
     bmd = game.make.bitmapData();
 
@@ -185,18 +308,11 @@ function create() {
     //    ch.circle.alpha = 0;
     //} ,this);
     game.input.onTap.add(function() {
-            if (typeof lines[0] !='undefined' && lines[0]!=null) { // was on hold
-                console.log('up');
-                //lines.unshift(null);
-                lines.unshift(new Phaser.Line(game.input.x, game.input.y, 0, 0));
-            }
     },this)
 
     game.input.onHold.add(function() {
-        lines.unshift(new Phaser.Line(game.input.x, game.input.y, 0, 0));
-        ch.circle.position.x = game.input.x-100;
-        ch.circle.position.y = game.input.y-100;
-        ch.circle.visible = true;
+        //lines.unshift(new Phaser.Line(game.input.x, game.input.y, 0, 0));
+        ch.show();;
         game.add.tween(ch.circle).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true, 0);
     } ,this);
 
@@ -228,6 +344,6 @@ function update() {
 function render() {
     for (i in lines) {
         if (typeof lines[i]!=null)
-            game.debug.geom(lines[i]);
+            game.debug.geom(lines[i],'#f442ce',false);
     }
 }
