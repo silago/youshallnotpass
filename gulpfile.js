@@ -36,7 +36,7 @@ gulp.task('assets', function() {
 
 
 gulp.task('scripts', function() {
-    return gulp.src(['src/**.js'])
+    return gulp.src(['src/**/*.js'])
         .pipe(gulp.dest('build/src'))
         .pipe(reload({stream: true}));
 })
