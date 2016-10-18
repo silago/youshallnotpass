@@ -14,11 +14,9 @@
 		this.game.add.sprite(opts.x, opts.y, key, 1);
 		this.sprite = this.game.add.sprite(opts.x, opts.y, key, 0);
 		this.fullWidth = this.sprite.width;
-        opts.parent.addChild(this.sprite);
 		this.reset();
         this.setPos = function(x,y) {
             this.sprite.position.x = x;
-            this.position.x = x;
             this.sprite.x = x;
         }
 	}
