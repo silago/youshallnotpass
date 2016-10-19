@@ -74,6 +74,9 @@ gulp.task('watch', function(){
 });
 
 
+gulp.task('heroku', ['assets','bower_components','html','scripts','styles'], function() {
+    //gulp.run('lr-server', 'scripts', 'styles');
+});
 
 gulp.task('default', ['assets','bower_components','html','scripts','styles','webserver','watch'], function() {
     //gulp.run('lr-server', 'scripts', 'styles');
