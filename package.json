@@ -1,10 +1,9 @@
 {
   "name": "you-shall-not-pass",
   "version": "0.0.0",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "dependencies": {
+	"bower":"*",
+	"gulp":"*",
     "bower-sync": "^0.1.1",
     "browser-sync": "^2.17.1",
     "gulp-browserify": "^0.5.1",
