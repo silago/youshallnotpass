@@ -12,5 +12,8 @@
     "gulp-styl": "^1.2.0",
     "gulp-watch": "^4.3.10",
     "tiny-lr": "^0.2.1"
+  },
+  "scripts": {
+      "postinstall": "./node_modules/bower/bin/bower install && ./node_modules/gulp/bin/gulp"
   }
 }
