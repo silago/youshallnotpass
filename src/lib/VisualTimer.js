@@ -5,6 +5,7 @@
 			this.type = opts.type;
 		}
 		this.totalTime = opts.seconds;
+		this.currentTime = opts.seconds;
 		this.game = opts.game;
 		this.onComplete = opts.onComplete;
 		var key = 'timer';
@@ -73,6 +74,8 @@
 
     	timerTick: function(time) {
     		/*jshint validthis:true */
+				console.log(':::');
+				console.log(this.currentTime,'::',time,'::',this.totalTime);
             this.currentTime-=time;
     		//var myTime = (this.type == 'down') ? this.remainingTime() : this.currentTime;//this.timer.seconds;
     		this.rect.width = Math.max(0, (this.currentTime / this.totalTime) * this.fullWidth);

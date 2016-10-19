@@ -16,7 +16,7 @@ Enemy = function(game,x,y,resource) {
     this.attack_cooldown = 1*1000;
     this.attack_timer    = 0;
     this.getHit = function(damage) {
-        this.helth-=damage;
+        this.health-=damage;
         this.indicator.timerTick(damage);
         if (this.health<=0) {
             this.destroy();
@@ -35,7 +35,6 @@ Enemy = function(game,x,y,resource) {
 
     }
     this.update = function() {
-        console.log(this.indicator.sprite.position.x);
             this.indicator.sprite.x = this.position.x;
             this.indicator.sprite.y = this.position.y;
 this.indicator.setPos(this.position.x);
@@ -57,5 +56,5 @@ this.indicator.setPos(this.position.x);
     this.add();
     this.walk();
     game.physics.enable(this, Phaser.Physics.ARCADE);
-
+    this.immovable = true;
 }

@@ -73,7 +73,7 @@ function create() {
     EnemyEmitter(game,1000*7);
     enemies = game.add.group();
     player = game.add.group();
-    ch = new CasterCircle(game,[new Rain(game,{enemies:enemies}), new Bolt(game)]);
+    ch = new CasterCircle(game,[new Rain(game,{enemies:enemies}), new Bolt(game,{enemies:enemies})]);
     wizard = new Wizard(game,0, 450, 'wizard');
     player.add(wizard);
 
