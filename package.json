@@ -17,6 +17,6 @@
   },
   "scripts": {
       "start":"node index.js",
-      "postinstall": "bower install && gulp heroku"
+      "postinstall": "bower install bower.json && gulp heroku"
   }
 }
