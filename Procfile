@@ -1,1 +1,1 @@
-web: gulp heroku && node index.js
+web: bower install && gulp heroku && node index.js

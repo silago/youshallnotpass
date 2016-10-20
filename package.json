@@ -16,7 +16,7 @@
     "tiny-lr": "^0.2.1"
   },
   "scripts": {
-      "start":"ls && ls build && ls build/src && node index.js",
+      "start":"node index.js",
       "postinstall": "./node_modules/bower/bin/bower install && gulp heroku"
   }
 }
