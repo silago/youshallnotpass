@@ -78,6 +78,6 @@ gulp.task('heroku', ['assets','bower_components','html','scripts','styles'], fun
     //gulp.run('lr-server', 'scripts', 'styles');
 });
 
-gulp.task('default', ['assets','bower_components','html','scripts','styles','webserver','watch'], function() {
+gulp.task('default', ['assets','html','bower_components','scripts','styles','webserver','watch'], function() {
     //gulp.run('lr-server', 'scripts', 'styles');
 });
