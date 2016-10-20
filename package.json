@@ -1,7 +1,9 @@
 {
   "name": "you-shall-not-pass",
   "version": "0.0.0",
+   "main": "index.js",
   "dependencies": {
+    "express": "4.13.3",
 	"bower":"*",
 	"gulp":"*",
     "bower-sync": "^0.1.1",
