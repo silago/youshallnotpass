@@ -7,7 +7,7 @@ app.use(express.static(__dirname + '/build'));
 
 
 app.get('/', function(request, response) {
-  response.render('build/indx.html');
+  response.render('build/index.html');
 });
 
 app.listen(app.get('port'), function() {
