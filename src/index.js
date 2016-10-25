@@ -20,12 +20,17 @@ function preload() {
 
 
 
+const GAME_STATE_IDLE   = 0
+const GAME_STATE_CIRCLE = 1
 
 Wizard = function(game,x,y,resource) {
+
     Object.setPrototypeOf(this, Object.create(GameObject.prototype));
     GameObject.call(this, game,x,y,resource);
     var prototype = Object.getPrototypeOf(this);
     this.health =  100;
+    this.mana =  100;
+    this.mana_regain = 2; //per second
     this.gui = {};
     this.getHit = function(damage) {
         this.health-=damage;
@@ -36,11 +41,32 @@ Wizard = function(game,x,y,resource) {
             fill: "#ff0044",
             align: "center"
         });
-    this.gui.mana = game.add.text(130, 160, 100, {
+    this.gui.mana = game.add.text(130, 160, parseInt(this.mana), {
             font: "65px Arial",
             fill: "#4400ff",
             align: "center"
         });
+    this.defaulSpell = new Dot(game,this,{enemies:enemies});
+    game.input.onTap.add(function() {
+      this.defaulSpell.cast();
+    } ,this);
+    this.takeMana = function(v) {
+      if (this.mana<v) return false;
+      this.mana-=v;
+      this.gui.mana.setText(parseInt(this.mana));
+      return true;
+    }
+    this.update = function() {
+      var t = 0.001*game.time.elapsed;
+      if (this.mana<100) {
+          this.mana = this.mana + this.mana_regain*t;
+          this.gui.mana.setText(parseInt(this.mana));
+      } else if (this.mana>100) {
+          this.mana = 100;
+          this.gui.mana.setText(parseInt(this.mana));
+      }
+    }
+
     game.add.existing(this);
     this.immovable = true;
     this.body.moves = false;
@@ -68,19 +94,18 @@ var STATE_DRAW = 1;
 var state = STATE_IDLE;
 function create() {
 
-
     game.add.sprite(0, 0, 'background');
     EnemyEmitter(game,1000*7);
     enemies = game.add.group();
     player = game.add.group();
-    ch = new CasterCircle(game,[new Rain(game,{enemies:enemies}), new Bolt(game,{enemies:enemies})]);
     wizard = new Wizard(game,0, 450, 'wizard');
+    ch = new CasterCircle(game,[new Rain(game,wizard,{enemies:enemies}), new Bolt(game,wizard,{enemies:enemies})]);
     player.add(wizard);
 
     game.physics.enable(wizard, Phaser.Physics.ARCADE);
     wizard.can_cast = true;
     graphics = game.add.graphics(100, 100);
-    game.input.holdRate = 1000;
+    game.input.holdRate = 500;
     game.input.onHold.add(function() {
         ch.show();
         game.add.tween(ch.circle).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true, 0);
@@ -95,14 +120,6 @@ function update() {
             y:game.input.y
         }
     }
-
-    //if (game.physics.arcade.collide(wizard, enemies,function(wizard,enemy) {
-    //  if (typeof wizard.getHit == 'function') {
-    //      wizard.getHit();
-    //  }
-    //},function(){
-    //  return true;
-    //},this));
 }
 
 function render() {

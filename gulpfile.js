@@ -60,12 +60,12 @@ gulp.task('watch', function(){
         gulp.start('html');
     });
 
-    watch(['src/*'], function(event, cb) {
+    watch(['src/**/*'], function(event, cb) {
         gulp.start('scripts');
         gulp.start('bower_components');
     });
 
-    watch(['assets/*'], function(event, cb) {
+    watch(['assets/**/*'], function(event, cb) {
         gulp.start('assets');
     });
 

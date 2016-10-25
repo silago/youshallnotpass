@@ -12,7 +12,7 @@
 		if (opts.key) {
 			key = opts.key;
 		}
-		this.game.add.sprite(opts.x, opts.y, key, 1);
+		//this.game.add.sprite(opts.x, opts.y, key, 1);
 		this.sprite = this.game.add.sprite(opts.x, opts.y, key, 0);
 		this.fullWidth = this.sprite.width;
 		this.reset();
