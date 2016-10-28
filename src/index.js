@@ -15,6 +15,8 @@ function preload() {
     game.load.image('eye',     'assets/eye.png');
     game.load.image('rain',     'assets/rain.png');
     game.load.image('bolt',     'assets/bolt.png');
+    game.load.image('bolt_icon',     'assets/icons/bolt_icon.png');
+    game.load.image('rain_icon',     'assets/icons/rain_icon.png');
     game.load.spritesheet('orcs', 'assets/orc_spritesheet.png', 100, 100, 4);
 }
 
@@ -47,9 +49,6 @@ Wizard = function(game,x,y,resource) {
             align: "center"
         });
     this.defaulSpell = new Dot(game,this,{enemies:enemies});
-    game.input.onTap.add(function() {
-      this.defaulSpell.cast();
-    } ,this);
     this.takeMana = function(v) {
       if (this.mana<v) return false;
       this.mana-=v;
@@ -73,17 +72,24 @@ Wizard = function(game,x,y,resource) {
 }
 
 
-EnemyEmitter = function(game,interval) {
-    setInterval(function() {
-        var x = game.width-500;
-        var y = 380+parseInt((Math.random()*50));
-        var e = new Enemy(game,x,y,'orcs')
-        //e.add()
-        //e.walk();
-        enemies.add(e);
-        //game.physics.enable(e, Phaser.Physics.ARCADE);
-        console.log('new enemy spawned');
-    },interval);
+StartEnemyEmitter = function(game,interval) {
+
+    //setInterval(function() {
+    game.time.events.loop(
+        Phaser.Timer.SECOND*interval,
+        (() => {
+            var x = game.width-500;
+            var y = 380+parseInt((Math.random()*50));
+            var e = new Enemy(game,x,y,'orcs')
+            //e.add()
+            //e.walk();
+            enemies.add(e);
+            //game.physics.enable(e, Phaser.Physics.ARCADE);
+            console.log('new enemy spawned');
+        }),
+        this
+    );
+    //},interval);
 }
 
 
@@ -94,13 +100,26 @@ var STATE_DRAW = 1;
 var state = STATE_IDLE;
 function create() {
 
-    game.add.sprite(0, 0, 'background');
-    EnemyEmitter(game,1000*7);
+    var bg = game.add.sprite(0, 0, 'background');
+    bg.inputEnabled = true;
+    StartEnemyEmitter(game,7);
     enemies = game.add.group();
     player = game.add.group();
     wizard = new Wizard(game,0, 450, 'wizard');
-    ch = new CasterCircle(game,[new Rain(game,wizard,{enemies:enemies}), new Bolt(game,wizard,{enemies:enemies})]);
+
+    var rain_spell = new Rain(game,wizard,{enemies:enemies});
+    var bolt_spell = new Bolt(game,wizard,{enemies:enemies});
+    ch = new CasterCircle(game,[rain_spell,bolt_spell ]);
     player.add(wizard);
+
+    var bolt_icon = game.add.sprite(game.width-128,64, 'bolt_icon');
+    bolt_icon.inputEnabled = true;
+    var rain_icon = game.add.sprite(game.width-128,128+32,'rain_icon');
+    rain_icon.inputEnabled = true;
+
+    bolt_icon.events.onInputUp.add((()=>{if (!ch.circle.visible) bolt_spell.cast();      }),this);
+    rain_icon.events.onInputUp.add((()=>{if (!ch.circle.visible) rain_spell.cast();       }),this);
+           bg.events.onInputUp.add((()=>{if (!ch.circle.visible) wizard.defaulSpell.cast();}),this);
 
     game.physics.enable(wizard, Phaser.Physics.ARCADE);
     wizard.can_cast = true;
