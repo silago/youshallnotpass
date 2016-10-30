@@ -19,8 +19,5 @@
   "scripts": {
     "start": "node index.js",
     "postinstall": "bower install && gulp heroku"
-  },
-  "devDependencies": {
-    "cordova": "^6.3.1"
   }
 }
