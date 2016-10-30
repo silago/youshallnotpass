@@ -25,14 +25,45 @@ function preload() {
 const GAME_STATE_IDLE   = 0
 const GAME_STATE_CIRCLE = 1
 
-Wizard = function(game,x,y,resource) {
+var ls = window.content.localStorage;
+//ls.setItem("myvariable", "myvalue");
+//var item = ls.getItem("myvariable");
 
-    Object.setPrototypeOf(this, Object.create(GameObject.prototype));
-    GameObject.call(this, game,x,y,resource);
-    var prototype = Object.getPrototypeOf(this);
+//saveSettings ()
+
+
+var  saveSettings = function(item,key,value) {
+  ls.setItem('save:'+'.'+item+'.'+key,value);
+  window[item].prototype[key]=value;
+}
+
+var loadSettings = function() {
+  var skeys = Object.keys(ls);
+  for (var i=0;i<skeys.length;i++) {
+    var k = skeys[i];
+    var v = ls.getItem(k);
+    if (k.indexOf('save:')==0) {
+      var key_parts = k.split('.');
+      window[key_parts[1]].prototype[key_parts[2]]=v;
+    }
+  }
+}
+
+
+Wizard = function(game,x,y,resource) {
+    //GameObject.call(this, game,x,y,resource);
+    Phaser.Sprite.call(this, game,x,y,resource);
+    game.physics.enable(this, Phaser.Physics.ARCADE);
+
+    this.add = function() {
+        game.add.existing(this);
+        game.physics.enable(this, Phaser.Physics.ARCADE);
+        return this;
+    }
     this.health =  100;
     this.mana =  100;
-    this.mana_regain = 2; //per second
+    //this.constructor.prototype.mana_regain = 20;
+
     this.gui = {};
     this.getHit = function(damage) {
         this.health-=damage;
@@ -55,6 +86,7 @@ Wizard = function(game,x,y,resource) {
       this.gui.mana.setText(parseInt(this.mana));
       return true;
     }
+    var self = this;
     this.update = function() {
       var t = 0.001*game.time.elapsed;
       if (this.mana<100) {
@@ -70,6 +102,8 @@ Wizard = function(game,x,y,resource) {
     this.immovable = true;
     this.body.moves = false;
 }
+Wizard.prototype = Object.create(Phaser.Sprite.prototype);
+Wizard.prototype.mana_regain = 10;//Object.create(Phaser.Sprite.prototype);
 
 
 StartEnemyEmitter = function(game,interval) {
@@ -100,6 +134,7 @@ var STATE_DRAW = 1;
 var state = STATE_IDLE;
 function create() {
 
+    loadSettings();
     var bg = game.add.sprite(0, 0, 'background');
     bg.inputEnabled = true;
     StartEnemyEmitter(game,7);
