@@ -1,4 +1,4 @@
-Enemy = function(game,x,y,resource) {
+Enemy = function(game,x,y,resource,player) {
     Object.setPrototypeOf(this, Object.create(GameObject.prototype));
     GameObject.call(this, game,x,y,resource);
     var prototype = Object.getPrototypeOf(this);
@@ -37,19 +37,19 @@ Enemy = function(game,x,y,resource) {
     this.update = function() {
             this.indicator.sprite.x = this.position.x;
             this.indicator.sprite.y = this.position.y;
-this.indicator.setPos(this.position.x);
+            this.indicator.setPos(this.position.x);
 
-        if (game.physics.arcade.collide(this, player,function(enemy,player) {
-          if (typeof player.getHit == 'function') {
-              this.attack_timer-=game.time.elapsed;
-              if (this.attack_timer<=0) {
-                  player.getHit(this.damage);
-                  this.attack_timer = this.attack_cooldown;
+            if (game.physics.arcade.collide(this, player,function(enemy,player) {
+              if (typeof player.getHit == 'function') {
+                  this.attack_timer-=game.time.elapsed;
+                  if (this.attack_timer<=0) {
+                      player.getHit(this.damage);
+                      this.attack_timer = this.attack_cooldown;
+                  }
               }
-          }
-        },function(){
-          return true;
-        },this));
+            },function(){
+              return true;
+            },this));
     }
     game.add.existing(this);
 

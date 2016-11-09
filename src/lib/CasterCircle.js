@@ -35,6 +35,7 @@ CasterCircle = function(game, spells) {
 					}
 		};
 		this.show= function() {
+            return;
       var x = game.input.x,
           y = game.input.y,
           offset = 100.

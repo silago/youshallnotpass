@@ -1,8 +1,10 @@
+'use strickt';
 var game = new Phaser.Game(1352, 768, Phaser.AUTO, '', { preload: preload, create: create, update: update, render:render });
 
 function preload() {
     game.load.script('VisualTimer.js','src/lib/VisualTimer.js');
     game.load.script('Spells.js','src/lib/Spells.js');
+    game.load.script('Wizard.js','src/lib/Wizard.js');
     game.load.script('CasterCircle.js','src/lib/CasterCircle.js');
     game.load.script('GameObject.js','src/lib/GameObject.js');
     game.load.script('Enemy.js','src/lib/Enemy.js');
@@ -50,71 +52,17 @@ var loadSettings = function() {
 }
 
 
-Wizard = function(game,x,y,resource) {
-    //GameObject.call(this, game,x,y,resource);
-    Phaser.Sprite.call(this, game,x,y,resource);
-    game.physics.enable(this, Phaser.Physics.ARCADE);
-
-    this.add = function() {
-        game.add.existing(this);
-        game.physics.enable(this, Phaser.Physics.ARCADE);
-        return this;
-    }
-    this.health =  100;
-    this.mana =  100;
-    //this.constructor.prototype.mana_regain = 20;
-
-    this.gui = {};
-    this.getHit = function(damage) {
-        this.health-=damage;
-        this.gui.health.setText(this.health);
-    }
-    this.gui.health = game.add.text(130, 60, this.health, {
-            font: "65px Arial",
-            fill: "#ff0044",
-            align: "center"
-        });
-    this.gui.mana = game.add.text(130, 160, parseInt(this.mana), {
-            font: "65px Arial",
-            fill: "#4400ff",
-            align: "center"
-        });
-    this.defaulSpell = new Dot(game,this,{enemies:enemies});
-    this.takeMana = function(v) {
-      if (this.mana<v) return false;
-      this.mana-=v;
-      this.gui.mana.setText(parseInt(this.mana));
-      return true;
-    }
-    var self = this;
-    this.update = function() {
-      var t = 0.001*game.time.elapsed;
-      if (this.mana<100) {
-          this.mana = this.mana + this.mana_regain*t;
-          this.gui.mana.setText(parseInt(this.mana));
-      } else if (this.mana>100) {
-          this.mana = 100;
-          this.gui.mana.setText(parseInt(this.mana));
-      }
-    }
-
-    game.add.existing(this);
-    this.immovable = true;
-    this.body.moves = false;
-}
-Wizard.prototype = Object.create(Phaser.Sprite.prototype);
-Wizard.prototype.mana_regain = 10;//Object.create(Phaser.Sprite.prototype);
 
 
-StartEnemyEmitter = function(game,interval) {
 
+StartEnemyEmitter = function(game,interval,enemies,player) {
     //setInterval(function() {
     game.time.events.loop(
         Phaser.Timer.SECOND*interval,
         (() => {
             var x = game.width-500;
             var y = 380+parseInt((Math.random()*50));
-            var e = new Enemy(game,x,y,'orcs')
+            var e = new Enemy(game,x,y,'orcs',player)
             //e.add()
             //e.walk();
             enemies.add(e);
@@ -133,19 +81,21 @@ var STATE_IDLE = 0;
 var STATE_DRAW = 1;
 var state = STATE_IDLE;
 function create() {
-
-    loadSettings();
+    //loadSettings();
     var bg = game.add.sprite(0, 0, 'background');
-    bg.inputEnabled = true;
-    StartEnemyEmitter(game,7);
-    enemies = game.add.group();
-    player = game.add.group();
-    wizard = new Wizard(game,0, 450, 'wizard');
+        bg.inputEnabled = true;
+        bg.events.onInputUp.add((()=>{if (!ch.circle.visible) wizard.defaulSpell.cast();}),this);
+
+    var enemies = game.add.group();
+    var player = game.add.group();
+    console.log(Wizard);
+    var wizard = new Wizard(game,0, 450, 'wizard');
+    player.add(wizard);
+    StartEnemyEmitter(game,7,enemies,player);
 
     var rain_spell = new Rain(game,wizard,{enemies:enemies});
     var bolt_spell = new Bolt(game,wizard,{enemies:enemies});
     ch = new CasterCircle(game,[rain_spell,bolt_spell ]);
-    player.add(wizard);
 
     var bolt_icon = game.add.sprite(game.width-128,64, 'bolt_icon');
     bolt_icon.inputEnabled = true;
@@ -154,7 +104,6 @@ function create() {
 
     bolt_icon.events.onInputUp.add((()=>{if (!ch.circle.visible) bolt_spell.cast();      }),this);
     rain_icon.events.onInputUp.add((()=>{if (!ch.circle.visible) rain_spell.cast();       }),this);
-           bg.events.onInputUp.add((()=>{if (!ch.circle.visible) wizard.defaulSpell.cast();}),this);
 
     game.physics.enable(wizard, Phaser.Physics.ARCADE);
     wizard.can_cast = true;
@@ -165,20 +114,33 @@ function create() {
         game.add.tween(ch.circle).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true, 0);
     } ,this);
 
+
+ this.bmd = game.add.bitmapData(800,600);
+ sprite = game.add.sprite(0, 0, this.bmd);
+ this.bmd.ctx.strokeStyle = "red";
 }
 
 function update() {
-    if (typeof lines[0] !='undefined' && lines[0]!=null) { // was on hold
-        lines[0].end = {
-            x:game.input.x,
-            y:game.input.y
-        }
+    if (game.input.mousePointer.isDown) {
+        this.bmd.ctx.lineTo(game.input.x, game.input.y);
+        this.bmd.ctx.lineWidth = 2;
+        this.bmd.ctx.stroke();
+        this.bmd.dirty = true;
+    } else {
+        this.bmd.ctx.beginPath();
+        this.bmd.clear();
     }
+    //if (typeof lines[0] !='undefined' && lines[0]!=null) { // was on hold
+    //    lines[0].end = {
+    //        x:game.input.x,
+    //        y:game.input.y
+    //    }
+    //}
 }
 
 function render() {
-    for (i in lines) {
-        if (typeof lines[i]!=null)
-            game.debug.geom(lines[i],'#f442ce',false);
-    }
+    //for (i in lines) {
+    //    if (typeof lines[i]!=null)
+    //        game.debug.geom(lines[i],'#f442ce',false);
+    //}
 }
