@@ -118,15 +118,59 @@ function create() {
  this.bmd = game.add.bitmapData(800,600);
  sprite = game.add.sprite(0, 0, this.bmd);
  this.bmd.ctx.strokeStyle = "red";
+
 }
 
+
 function update() {
+
+
+    var _check = ((points) => {
+        var left    = -1,
+            right    =  1,
+            up     = -1,
+            down    =  1;
+        var min_diff = 10;
+        var draw_spell_1 = [
+            [],
+            [right,left],
+            [right,up]
+        ];
+
+        var points_counter  = 1;// points.length;
+        var r=true;
+        while (points_counter<points.length) {
+            var xdir = 0;
+            if (points[points_counter-1][0]<points[points_counter][0]) {
+                xdir = right;
+            } else {
+                xdir = down;
+            }
+            if (points[points_counter-1][1]<points[points_counter][1]) {
+                ydir = right;
+            } else {
+                ydir = down;
+            }
+
+            if (draw_spell_1[points_counter][0]==xdir && draw_spell_1[points_counter][1]==ydir) {
+                return false;
+            }
+            points_counter++;
+        }
+        return true;
+    });
+
     if (game.input.mousePointer.isDown) {
+        //game.input
+        if (       
+        )
+        var l = this.s_points[this.s_points.lentgh];
         this.bmd.ctx.lineTo(game.input.x, game.input.y);
         this.bmd.ctx.lineWidth = 2;
         this.bmd.ctx.stroke();
         this.bmd.dirty = true;
     } else {
+        this.s_points = [];
         this.bmd.ctx.beginPath();
         this.bmd.clear();
     }
