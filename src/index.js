@@ -84,12 +84,14 @@ function create() {
     //loadSettings();
     var bg = game.add.sprite(0, 0, 'background');
         bg.inputEnabled = true;
-        bg.events.onInputUp.add((()=>{if (!ch.circle.visible) wizard.defaulSpell.cast();}),this);
+        //bg.events.onInputUp.add((()=>{if (!ch.circle.visible) wizard.defaulSpell.cast();}),this);
 
     var enemies = game.add.group();
+    this.enemies = enemies;
     var player = game.add.group();
     console.log(Wizard);
     var wizard = new Wizard(game,0, 450, 'wizard');
+    this.wizard = wizard;
     player.add(wizard);
     StartEnemyEmitter(game,7,enemies,player);
 
@@ -118,7 +120,8 @@ function create() {
  this.bmd = game.add.bitmapData(800,600);
  sprite = game.add.sprite(0, 0, this.bmd);
  this.bmd.ctx.strokeStyle = "red";
-
+ this._path = [];
+ this.s_points = [];
 }
 
 
@@ -132,47 +135,122 @@ function update() {
             down    =  1;
         var min_diff = 10;
         var draw_spell_1 = [
-            [],
-            [right,left],
-            [right,up]
-        ];
+            [
+                [0,0],
+                [1,1],
+                [1,-1]
+            ],
+            [
+                [0,0],
+                [1,-1],
+                [1,1]
+            ]
 
-        var points_counter  = 1;// points.length;
-        var r=true;
-        while (points_counter<points.length) {
-            var xdir = 0;
-            if (points[points_counter-1][0]<points[points_counter][0]) {
-                xdir = right;
-            } else {
-                xdir = down;
-            }
-            if (points[points_counter-1][1]<points[points_counter][1]) {
-                ydir = right;
-            } else {
-                ydir = down;
-            }
-
-            if (draw_spell_1[points_counter][0]==xdir && draw_spell_1[points_counter][1]==ydir) {
-                return false;
-            }
-            points_counter++;
+    ];
+        console.log(points);
+        var points_counter  = 0;// points.length;
+        for (points_counter in draw_spell_1) {
+                if (draw_spell_1[points_counter].toString() == points.toString()) {
+                    if (points_counter == 0) {
+                        (new Bolt(game,this.wizard,{enemies:this.enemies})).cast();
+                    }
+                    if (points_counter == 1) {
+                        (new Rain(game,this.wizard,{enemies:this.enemies})).cast();
+                    }
+                    return true;
+                }
         }
-        return true;
+        return false;
     });
 
     if (game.input.mousePointer.isDown) {
+
+        if (!this.s_points.length) {
+            this.s_points.push([0,0]);
+        }
         //game.input
-        if (       
-        )
-        var l = this.s_points[this.s_points.lentgh];
+        var checkSPoints = function(scope) {
+                //console.log(scope._path);
+                var _2= scope._path[2];
+                var _1= scope._path[1];
+                var _0= scope._path[0];
+                //console.log(scope._path);
+                var min_diff=0;
+                var current_direction_x = 0;
+                var current_direction_y = 0;
+                if (_1[0]-_0[0]<min_diff)  {
+                    current_direction_x = 1;
+                } else if (_1[0]-_0[0]>min_diff ) {
+                    current_direction_x = -1;
+                }
+                if (_1[1]-_0[1]<min_diff)  {
+                    current_direction_y = 1;
+                } else if (_1[1]-_0[1]>min_diff ) {
+                    current_direction_y = -1;
+                }
+                var a  = true;
+                if (scope.s_points.length>0) {
+                    var _prev = scope.s_points[scope.s_points.length-1];
+                    if (_prev[0]==current_direction_x && _prev[1]==current_direction_y) {
+                        a = false;
+                    }
+                }
+                if (a)
+                scope.s_points.push([
+                    current_direction_x,
+                    current_direction_y
+                ]);
+                //console.log(scope.s_points);
+        }
+
+        if (true) {
+            var x = game.input.x;
+            var y = game.input.y;
+            if (this._path[ 2 ]==undefined) {
+                    this._path[2] = [x,y];
+            } else if (this._path[1] == undefined) {
+                    if(this._path[2][0]!=x || this._path[2][1]!=y) {
+                        this._path[1] = [x,y];
+                    }
+            } else {
+                //console.log(Math.abs(this._path[1][0]-x) , Math.abs(this._path[1][1]-y));
+                if (!this._path[0])  {
+                    this._path[0] = [x,y];
+                } else if ((Math.abs(this._path[1][0]-x) + Math.abs(this._path[1][1]-y))>15) {
+                    //console.log('check');
+                    //console.log(this._path);
+
+                    var tmp_0 = this._path[0];
+                    this._path[0] = [x,y];
+                    checkSPoints(this);
+                    this._path[2] = this._path[1];
+                    this._path[1] = tmp_0;//this._path[0];
+                    console.log(this._path);
+                }
+                //this._path[0]  = undefined;
+            }
+        }
+
+        //var l = this.s_points[this.s_points.lentgh];
         this.bmd.ctx.lineTo(game.input.x, game.input.y);
         this.bmd.ctx.lineWidth = 2;
         this.bmd.ctx.stroke();
         this.bmd.dirty = true;
+        //console.log(this.bmd);
     } else {
+        if (this.s_points.length) {
+            //console.log(this.s_points);
+            console.log(
+                _check(this.s_points)
+            );
+        }
+        this._path[2] = null;
+        this._path[1] = null;
+        this._path[0]  = null;
+
         this.s_points = [];
-        this.bmd.ctx.beginPath();
         this.bmd.clear();
+        this.bmd.ctx.beginPath();
     }
     //if (typeof lines[0] !='undefined' && lines[0]!=null) { // was on hold
     //    lines[0].end = {
