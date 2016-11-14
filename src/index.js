@@ -163,7 +163,7 @@ function update() {
         return false;
     });
 
-    if (game.input.mousePointer.isDown) {
+    if (game.input.activePointer.isDown) {
 
         if (!this.s_points.length) {
             this.s_points.push([0,0]);
