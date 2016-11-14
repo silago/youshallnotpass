@@ -27,7 +27,7 @@ function preload() {
 const GAME_STATE_IDLE   = 0
 const GAME_STATE_CIRCLE = 1
 
-var ls = window.content.localStorage;
+//var ls = window.content.localStorage;
 //ls.setItem("myvariable", "myvalue");
 //var item = ls.getItem("myvariable");
 
