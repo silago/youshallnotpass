@@ -1,6 +1,10 @@
 'use strickt';
 var game = new Phaser.Game(1352, 768, Phaser.AUTO, '', { preload: preload, create: create, update: update, render:render });
 
+var getGame = function() {
+    return game;
+}
+
 function preload() {
     game.load.script('VisualTimer.js','src/lib/VisualTimer.js');
     game.load.script('Spells.js','src/lib/Spells.js');
@@ -8,6 +12,7 @@ function preload() {
     game.load.script('CasterCircle.js','src/lib/CasterCircle.js');
     game.load.script('GameObject.js','src/lib/GameObject.js');
     game.load.script('Enemy.js','src/lib/Enemy.js');
+    game.load.script('EnemyEmitter.js','src/lib/EnemyEmitter.js');
     game.load.image('background', 'assets/background2.png');
     game.load.image('wizard',     'assets/wizard.png');
     game.load.image('spell',      'assets/spell.png');
@@ -55,24 +60,6 @@ var loadSettings = function() {
 
 
 
-StartEnemyEmitter = function(game,interval,enemies,player) {
-    //setInterval(function() {
-    game.time.events.loop(
-        Phaser.Timer.SECOND*interval,
-        (() => {
-            var x = game.width-500;
-            var y = 380+parseInt((Math.random()*50));
-            var e = new Enemy(game,x,y,'orcs',player)
-            //e.add()
-            //e.walk();
-            enemies.add(e);
-            //game.physics.enable(e, Phaser.Physics.ARCADE);
-            console.log('new enemy spawned');
-        }),
-        this
-    );
-    //},interval);
-}
 
 
 var lines = [];
@@ -93,7 +80,9 @@ function create() {
     var wizard = new Wizard(game,0, 450, 'wizard');
     this.wizard = wizard;
     player.add(wizard);
-    StartEnemyEmitter(game,7,enemies,player);
+    var emitter = new EnemyEmitter(game,7,enemies,player);
+        emitter.init(enemies,player);
+        emitter.start();
 
     var rain_spell = new Rain(game,wizard,{enemies:enemies});
     var bolt_spell = new Bolt(game,wizard,{enemies:enemies});
