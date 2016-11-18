@@ -34,10 +34,11 @@ EnemyEmitter = function(enemies,player) {
                 var range = this.waves[this.current_wave].interval;
                 this.enemy_countdown = Math.floor(Math.random() * (range[1]-range[0]+1)) + range[0];
                 this.enemy_counter--;
+                console.log('enemies left',this.enemy_counter)
             } else {
                 console.log('5');
-                console.log(this.enemies);
-                //this.next_wave;
+                //console.log(this.enemies);
+                this.next_wave;
             }
         }
     });
@@ -46,7 +47,7 @@ EnemyEmitter = function(enemies,player) {
             console.log('spawn');
             var x = game.width-500;
             var y = 380+parseInt((Math.random()*50));
-            var e = new Enemy(this.game,x,y,'orcs',this.player)
+            var e = new window['Enemy'](this.game,x,y,'orcs',this.player)
             this.enemies.add(e);
     });
 
@@ -73,7 +74,7 @@ EnemyEmitter = function(enemies,player) {
     this.waves = [
         {
             'timeout':1,//itemout before start
-            'count':10,
+            'count':2,
             'interval':[2,10],//monster emitting interval
             'enemies_types':[
                 Enemy

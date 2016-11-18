@@ -222,7 +222,7 @@ function update() {
 
         //var l = this.s_points[this.s_points.lentgh];
         this.bmd.ctx.lineTo(game.input.x, game.input.y);
-        this.bmd.ctx.lineWidth = 2;
+        this.bmd.ctx.lineWidth = 6;
         this.bmd.ctx.stroke();
         this.bmd.dirty = true;
         //console.log(this.bmd);
