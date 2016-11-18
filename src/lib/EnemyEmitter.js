@@ -1,8 +1,9 @@
-EnemyEmitter = function(enemies,player) {
-    this.init = function(enemies,player) {
+EnemyEmitter = function(enemies,player,waves) {
+    this.init = function(enemies,player,waves) {
         this.game = getGame();
         this.enemies = enemies;
         this.player  = player;
+        this.waves = waves;
         return this;
     }
     this.interval = null;
@@ -12,33 +13,26 @@ EnemyEmitter = function(enemies,player) {
     this.enemy_countdown = 0;
     this.enemy_counter   = 0;
     this.update = (()=>{
-        console.log('1');
         var time = 1;
         if (!this.active) return;
-        console.log('1.1');
         if (this.wave_countdown>0) {
             this.wave_countdown-=time;
             return;
         }
-        console.log('2');
 
         if (this.enemy_countdown>0) {
             this.enemy_countdown-=time;
-        console.log('3');
         } else {
             if (this.enemy_counter>0) {
                 //Math.floor(Math.random() * 6) + 1
-
-                console.log('4');
                 this.spawn_monster();
                 var range = this.waves[this.current_wave].interval;
                 this.enemy_countdown = Math.floor(Math.random() * (range[1]-range[0]+1)) + range[0];
                 this.enemy_counter--;
                 console.log('enemies left',this.enemy_counter)
             } else {
-                console.log('5');
-                //console.log(this.enemies);
                 this.next_wave;
+                this.next_wave();
             }
         }
     });
@@ -52,14 +46,16 @@ EnemyEmitter = function(enemies,player) {
     });
 
     this.next_wave = (()=>{
-        this.current_wave++;
-        var i = this.current_wave;
-        var wave = this.waves[i];
+        console.log('next_wave');
+        this.current_wave+=1;
+        if (this.current_wave>=this.waves.length) {
+            this.active = false;
+            return;
+        }
+        var wave = this.waves[this.current_wave];
+        console.log(this.current_wave, wave, this.waves);
         this.enemy_counter  = wave['count'];
         this.wave_countdown = wave['timeout'];
-        if (this.current_wave>this.waves.length) {
-            this.active = false;
-        }
     });
     this.start = (() => {
         this.active = true;
@@ -71,17 +67,6 @@ EnemyEmitter = function(enemies,player) {
     //this.enemies = getEnemies();
     //this.player  = getPlayer();
 
-    this.waves = [
-        {
-            'timeout':1,//itemout before start
-            'count':2,
-            'interval':[2,10],//monster emitting interval
-            'enemies_types':[
-                Enemy
-            ]
-        },
-
-    ]
 
     //},interval);
 }

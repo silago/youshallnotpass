@@ -1,4 +1,4 @@
-'use strickt';
+'use strict';
 var game = new Phaser.Game(1352, 768, Phaser.AUTO, '', { preload: preload, create: create, update: update, render:render });
 
 var getGame = function() {
@@ -32,34 +32,6 @@ function preload() {
 const GAME_STATE_IDLE   = 0
 const GAME_STATE_CIRCLE = 1
 
-//var ls = window.content.localStorage;
-//ls.setItem("myvariable", "myvalue");
-//var item = ls.getItem("myvariable");
-
-//saveSettings ()
-
-
-var  saveSettings = function(item,key,value) {
-  ls.setItem('save:'+'.'+item+'.'+key,value);
-  window[item].prototype[key]=value;
-}
-
-var loadSettings = function() {
-  var skeys = Object.keys(ls);
-  for (var i=0;i<skeys.length;i++) {
-    var k = skeys[i];
-    var v = ls.getItem(k);
-    if (k.indexOf('save:')==0) {
-      var key_parts = k.split('.');
-      window[key_parts[1]].prototype[key_parts[2]]=v;
-    }
-  }
-}
-
-
-
-
-
 
 
 var lines = [];
@@ -68,10 +40,8 @@ var STATE_IDLE = 0;
 var STATE_DRAW = 1;
 var state = STATE_IDLE;
 function create() {
-    //loadSettings();
     var bg = game.add.sprite(0, 0, 'background');
         bg.inputEnabled = true;
-        //bg.events.onInputUp.add((()=>{if (!ch.circle.visible) wizard.defaulSpell.cast();}),this);
 
     var enemies = game.add.group();
     this.enemies = enemies;
@@ -80,13 +50,13 @@ function create() {
     var wizard = new Wizard(game,0, 450, 'wizard');
     this.wizard = wizard;
     player.add(wizard);
-    var emitter = new EnemyEmitter(game,7,enemies,player);
-        emitter.init(enemies,player);
-        emitter.start();
+    (new EnemyEmitter())
+        .init(enemies,player,GAME_CONFIG.waves)
+        .start();
 
     var rain_spell = new Rain(game,wizard,{enemies:enemies});
     var bolt_spell = new Bolt(game,wizard,{enemies:enemies});
-    ch = new CasterCircle(game,[rain_spell,bolt_spell ]);
+    var ch = new CasterCircle(game,[rain_spell,bolt_spell ]);
 
     var bolt_icon = game.add.sprite(game.width-128,64, 'bolt_icon');
     bolt_icon.inputEnabled = true;
@@ -98,16 +68,15 @@ function create() {
 
     game.physics.enable(wizard, Phaser.Physics.ARCADE);
     wizard.can_cast = true;
-    graphics = game.add.graphics(100, 100);
+    var graphics = game.add.graphics(100, 100);
     game.input.holdRate = 500;
     game.input.onHold.add(function() {
         ch.show();
         game.add.tween(ch.circle).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true, 0);
     } ,this);
 
-
  this.bmd = game.add.bitmapData(800,600);
- sprite = game.add.sprite(0, 0, this.bmd);
+ var sprite = game.add.sprite(0, 0, this.bmd);
  this.bmd.ctx.strokeStyle = "red";
  this._path = [];
  this.s_points = [];
@@ -227,12 +196,14 @@ function update() {
         this.bmd.dirty = true;
         //console.log(this.bmd);
     } else {
-        if (this.s_points.length) {
+
+        if (typeof this.s_points!='undefined' && this.s_points.length) {
             //console.log(this.s_points);
             console.log(
                 _check(this.s_points)
             );
         }
+        this._path = [];
         this._path[2] = null;
         this._path[1] = null;
         this._path[0]  = null;

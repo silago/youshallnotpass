@@ -4,20 +4,32 @@
   "companyName": "Nevermind",
   "main": "index.js",
   "dependencies": {
-    "express": "4.13.3",
     "bower": "*",
-    "gulp": "*",
     "bower-sync": "^0.1.1",
     "browser-sync": "^2.17.1",
+    "express": "4.13.3",
+    "gulp": "*",
     "gulp-browserify": "^0.5.1",
     "gulp-concat": "^2.6.0",
     "gulp-livereload": "^3.8.1",
     "gulp-styl": "^1.2.0",
     "gulp-watch": "^4.3.10",
+    "nedb": "^1.8.0",
     "tiny-lr": "^0.2.1"
   },
   "scripts": {
     "start": "node index.js",
     "postinstall": "bower install && gulp heroku"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/silago/youshallnotpass.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/silago/youshallnotpass/issues"
+  },
+  "homepage": "https://github.com/silago/youshallnotpass"
 }
