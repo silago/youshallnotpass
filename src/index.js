@@ -41,7 +41,7 @@ var STATE_DRAW = 1;
 var state = STATE_IDLE;
 function create() {
     var bg = game.add.sprite(0, 0, 'background');
-        bg.inputEnabled = true;
+      bg.inputEnabled = true;
 
     var enemies = game.add.group();
     this.enemies = enemies;
@@ -79,7 +79,7 @@ function create() {
  var sprite = game.add.sprite(0, 0, this.bmd);
  this.bmd.ctx.strokeStyle = "red";
  this._path = [];
- this.s_points = [];
+ bg.events.onInputUp.add((()=>{if (!ch.circle.visible) wizard.defaulSpell.cast();}),this);  this.s_points = [];
 }
 
 
