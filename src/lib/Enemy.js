@@ -3,7 +3,7 @@ Enemy = function(game,x,y,resource,player) {
     GameObject.call(this, game,x,y,resource);
     var prototype = Object.getPrototypeOf(this);
     this.damage = 10;
-    this.health = 25;
+    this.health = 20;
 
     this.indicator = new VisualTimer({
                         game: game,
