@@ -2,16 +2,16 @@ const GAME_CONFIG = {
     waves:  [
         {
             'timeout':1,//itemout before start
-            'count':1,
-            'interval':[2,10],//monster emitting interval
+            'count':15,
+            'interval':[0,2],//monster emitting interval
             'enemies_types':[
                 'Enemy'
             ]
         },
         {
             'timeout':1,//itemout before start
-            'count':2,
-            'interval':[2,10],//monster emitting interval
+            'count':25,
+            'interval':[0,0.5],//monster emitting interval
             'enemies_types':[
                 'Enemy'
             ]
