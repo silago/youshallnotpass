@@ -27,7 +27,6 @@ var Wizard = function(game,x,y,resource) {
             fill: "#4400ff",
             align: "center"
         });
-    this.defaulSpell = new Dot(game,this,{enemies:enemies});
     this.takeMana = function(v) {
       if (this.mana<v) return false;
       this.mana-=v;
