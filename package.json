@@ -1,35 +1,35 @@
 {
-  "name": "you-shall-not-pass",
-  "version": "0.0.0",
-  "companyName": "Nevermind",
-  "main": "index.js",
-  "dependencies": {
-    "bower": "*",
-    "bower-sync": "^0.1.1",
-    "browser-sync": "^2.17.1",
-    "express": "4.13.3",
-    "gulp": "*",
-    "gulp-browserify": "^0.5.1",
-    "gulp-concat": "^2.6.0",
-    "gulp-livereload": "^3.8.1",
-    "gulp-styl": "^1.2.0",
-    "gulp-watch": "^4.3.10",
-    "nedb": "^1.8.0",
-    "tiny-lr": "^0.2.1"
-  },
+  "name": "youshallnotpass",
+  "version": "1.0.0",
+  "description": "",
   "scripts": {
-    "start": "node index.js",
-    "postinstall": "bower install && gulp heroku"
+    "start":       "budo src/main.js:bundle.js --live -- -d -e src/main.js -t [babelify --comments false --presets es2015]",
+    "prebuild":    "mkdirp build",
+    "build":       "npm run build:js && npm run build:css && npm run build:html && npm run copy:all",
+    "build:js":    "browserify -d -e src/main.js -t [babelify --comments false --presets es2015] | uglifyjs -cm > build/bundle.min.js",
+    "build:css":   "cleancss css/main.css -o build/main.min.css",
+    "build:html":  "htmlprocessor index.html -o build/index.html",
+    "copy:all":    "npm run copy:assets && npm run copy:phaser",
+    "copy:assets": "ncp -rf assets build/",
+    "copy:phaser": "ncp -rf node_modules/phaser/build/phaser.min.js build/phaser.min.js"
   },
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/silago/youshallnotpass.git"
-  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/silago/youshallnotpass/issues"
+  "dependencies": {
+    "phaser": "^2.4.6"
   },
-  "homepage": "https://github.com/silago/youshallnotpass"
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-cli": "^6.9.0",
+    "babelify": "^7.3.0",
+    "babel-preset-es2015": "^6.9.0",
+    "browserify": "^13.0.1",
+    "budo": "^8.3.0",
+    "clean-css": "^3.4.17",
+    "htmlprocessor": "^0.2.3",
+    "mkdirp": "^0.5.1",
+    "ncp": "^2.0.0",
+    "uglify-js": "^2.6.2"
+  }
 }
