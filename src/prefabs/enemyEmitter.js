@@ -60,6 +60,7 @@ var EnemyEmitter = function() {
             var e = new this.enemies.types[available_monsters[
                     Math.floor(Math.random()*available_monsters.length)
                 ]](this.game,x,y,'',this.player);
+            e.setTarget(this.player.children[0]);
             //var e = new Enemy1(this.game,x,y,'orcs1',this.player)
             this.enemies.group.add(e);
     });
