@@ -1,0 +1,7 @@
+{
+  "generator-phaser": {
+    "projectName": "youshallnotpass",
+    "esVersion": 6,
+    "gameFolder": "boilerplate"
+  }
+}
