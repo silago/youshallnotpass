@@ -66,7 +66,18 @@ var EnemyEmitter = function() {
     });
 
     this.next_wave = (()=>{
-        console.log('next_wave');
+
+
+        var label = this.game.add.text(this.game.width*0.5, this.game.height*0.5, 'WAVE '+(this.current_wave+1)+'!', {
+                font: "65px Arial",
+                fill: "#ff0044",
+                align: "center"
+            });
+        label.anchor.set(0.5);
+        setTimeout(() =>{
+            label.destroy();   
+        },2000);
+
         this.current_wave+=1;
         if (this.current_wave>=this.waves.length) {
             this.active = false;
