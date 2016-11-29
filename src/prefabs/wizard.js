@@ -46,6 +46,6 @@ var Wizard = function(game,x,y,resource) {
     this.body.moves = false;
 }
 Wizard.prototype = Object.create(Phaser.Sprite.prototype);
-Wizard.prototype.mana_regain = 10;//Object.create(Phaser.Sprite.prototype);
+Wizard.prototype.mana_regain = 5;//Object.create(Phaser.Sprite.prototype);
 
 export default Wizard;

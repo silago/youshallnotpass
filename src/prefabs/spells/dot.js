@@ -1,6 +1,6 @@
 var Dot = function(game,caster,data) {
-        this.constructor.prototype.power     = 20;
-        this.constructor.prototype.mana_cost = 20;
+        this.constructor.prototype.power     = 9;
+        this.constructor.prototype.mana_cost = 10;
         this.sprite='spell';
         this.points = [
             [0,0],
@@ -11,7 +11,7 @@ var Dot = function(game,caster,data) {
           if (!caster.takeMana(this.mana_cost)) return;
           var spell = game.add.sprite(caster.position.x, caster.position.y, 'spell');
           game.physics.enable(spell, Phaser.Physics.ARCADE);
-          spell.body.velocity.x=300;
+          spell.body.velocity.x=2000;
           spell.update = function () {
             if (game.physics.arcade.overlap(spell, data.enemies,(s,enemy) => {
                     spell.body.position= {x:-1,y:-1};
