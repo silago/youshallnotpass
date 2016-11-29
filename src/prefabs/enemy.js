@@ -43,12 +43,13 @@ class BaseEnemy extends Phaser.Sprite {
             this.indicator.sprite.x = this.position.x;
             this.indicator.sprite.y = this.position.y;
             this.indicator.setPos(this.position.x);
-            if (false)
-            if (this.game.physics.arcade.collide(this, player,function(enemy,player) {
+            //if (false)
+            if (typeof this.player!='undefined')
+            if (this.game.physics.arcade.collide(this, this.player,function(enemy,player) {
               if (typeof player.getHit == 'function') {
-                  this.attack_timer-=game.time.elapsed;
+                  this.attack_timer-=this.game.time.elapsed;
                   if (this.attack_timer<=0) {
-                      player.getHit(this.damage);
+                      this.player.getHit(this.damage);
                       this.attack_timer = this.attack_cooldown;
                   }
               }
