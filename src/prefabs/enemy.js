@@ -64,7 +64,9 @@ class Enemy1 extends BaseEnemy{
     constructor(game, x, y, frame) {
         super(game, x, y, 'orcs1', frame);
         this.speed = 150;
-        this.init();
+        this.damage = 10;
+        this.health = 25;
+		this.init();
     }
 }
 
@@ -72,7 +74,9 @@ class Enemy1 extends BaseEnemy{
 class Enemy2 extends BaseEnemy { 
     constructor(game, x, y, frame) {
         super(game, x, y, 'orcs2', frame);
-        this.speed = 70;
+        this.speed = 80;
+		this.damage = 10;
+        this.health = 50;
         this.init();
     }
 }
