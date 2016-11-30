@@ -27,14 +27,14 @@ var Rain = function(game,caster,data) {
           game.physics.enable(spell, Phaser.Physics.ARCADE);
           spell.update =  () =>  {
             if (game.physics.arcade.overlap(spell, data.enemies, (spell,enemy) => {
-                spell.body.enable = false;
                 console.log(enemy);
-              enemy.getHit(this.power);
+                enemy.getHit(this.power);
             },function() {
               return true;
             },this));
+            spell.body.enable = false;
           }
-          setInterval(function() {
+          setTimeout(function() {
             spell.destroy();
           },2000);
         }
