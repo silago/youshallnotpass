@@ -8,13 +8,6 @@ class BaseEnemy extends Phaser.Sprite {
         this.damage = 10;
         this.game = game;
         this.health = 25;
-        this.indicator = new HealthBar({
-                            game: game,
-                            x: this.position.x,
-                            y: this.position.y,
-                            seconds: this.health,
-                            parent: this
-                        });
 
         this.attack_cooldown = 1*1000;
         this.attack_timer    = 0;
@@ -25,6 +18,13 @@ class BaseEnemy extends Phaser.Sprite {
     }    
     
     init() {
+        this.indicator = new HealthBar({
+                            game: this.game,
+                            x: this.position.x,
+                            y: this.position.y,
+                            seconds: this.health,
+                            parent: this
+                        });
         this.body.velocity.x=-this.speed;;
     }
 

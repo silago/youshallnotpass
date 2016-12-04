@@ -29,7 +29,7 @@ class DrawProcessor extends Phaser.Sprite {
         this.bmd.dirty = true;
 
         this.graphics = this.game.add.graphics(800, 600);
-  this.graphics.beginFill(0xFF3300);
+        this.graphics.beginFill(0xFF3300);
         //this.setTexture(this.bmd);
 
         //this.spellbook = [
