@@ -16,6 +16,10 @@ var Wizard = function(game,x,y,resource) {
     this.getHit = function(damage) {
         this.health-=damage;
         this.gui.health.setText(this.health);
+        if (this.health<0) {
+          console.log(this.game.state);
+          this.game.state.start('dead');
+        }
     }
     this.gui.health = game.add.text(130, 60, this.health, {
             font: "65px Arial",

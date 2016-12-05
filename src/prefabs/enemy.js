@@ -8,6 +8,7 @@ class BaseEnemy extends Phaser.Sprite {
         this.damage = 10;
         this.game = game;
         this.health = 25;
+        this.vertical_offset = 60;
 
         this.attack_cooldown = 1*1000;
         this.attack_timer    = 0;
@@ -81,4 +82,16 @@ class Enemy2 extends BaseEnemy {
     }
 }
 
-export {Enemy1, Enemy2}
+
+class Enemy3 extends BaseEnemy { 
+    constructor(game, x, y, frame) {
+        super(game, x, y, 'orcs3', frame);
+        this.speed = 20;
+		this.damage = 10;
+        this.health = 20;
+        this.vertical_offset = 120
+        this.init();
+    }
+}
+
+export {Enemy1, Enemy2, Enemy3}

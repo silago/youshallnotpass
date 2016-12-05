@@ -1,11 +1,11 @@
-import {Enemy1, Enemy2}  from '../prefabs/enemy';
+import {Enemy1, Enemy2, Enemy3}  from '../prefabs/enemy';
 
 var EnemyEmitter = function() {
     this.init = function(game,enemies,player,waves) {
         this.game = game; 
         this.enemies = {
                            group: enemies,
-                           types: {'Enemy1':Enemy1,'Enemy2':Enemy2}
+                           types: {'Enemy1':Enemy1,'Enemy2':Enemy2, 'Enemy3':Enemy3}
                        };
         this.player  = player;
         this.waves = waves;
@@ -34,7 +34,6 @@ var EnemyEmitter = function() {
                 var range = this.waves[this.current_wave].interval;
                 this.enemy_countdown = Math.floor(Math.random() * (range[1]-range[0]+1)) + range[0];
                 this.enemy_counter--;
-                console.log('enemies left',this.enemy_counter)
             } else {
                 this.next_wave;
                 this.next_wave();
@@ -43,23 +42,18 @@ var EnemyEmitter = function() {
     });
 
     this.spawn_monster = ((i)=>{
-            console.log('spawn');
             var x = this.game.width-500;
-            
-            var y= this.player.children[0].y-30+parseInt((Math.random()*20));
+            var y= this.player.children[0].y+parseInt((Math.random()*20));
             var available_monsters = [];
             for (var i in this.enemies.types) {
-               console.log(i);
-                console.log(this.waves[this.current_wave].enemies_types);
                if (this.waves[this.current_wave].enemies_types.indexOf(i)!=-1) {
                 available_monsters.push(i);
                }
             }
-            console.log(available_monsters);
-            console.log(this.enemies);
             var e = new this.enemies.types[available_monsters[
                     Math.floor(Math.random()*available_monsters.length)
                 ]](this.game,x,y,'',this.player);
+            e.y-=e.vertical_offset;
             e.setTarget(this.player.children[0]);
             //var e = new Enemy1(this.game,x,y,'orcs1',this.player)
             this.enemies.group.add(e);
@@ -84,7 +78,6 @@ var EnemyEmitter = function() {
             return;
         }
         var wave = this.waves[this.current_wave];
-        console.log(this.current_wave, wave, this.waves);
         this.enemy_counter  = wave['count'];
         this.wave_countdown = wave['timeout'];
     });

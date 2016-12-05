@@ -49,6 +49,7 @@ class Preloader extends Phaser.State {
     this.game.load.spritesheet('orcs', 'assets/orc_spritesheet.png', 100, 100, 4);
     this.game.load.spritesheet('orcs1', 'assets/orc_spritesheet1.png', 100, 100, 4);
     this.game.load.spritesheet('orcs2', 'assets/orc_spritesheet2.png', 100, 100, 4);
+    this.game.load.spritesheet('orcs3', 'assets/orc_spritesheet3.png', 100, 100, 4);
   }
 
   onLoadComplete() {

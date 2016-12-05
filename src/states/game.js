@@ -15,7 +15,7 @@ const GAME_CONFIG = {
             'count':15,
             'interval':[0,1],//monster emitting interval
             'enemies_types':[
-                'Enemy1',         
+                'Enemy1'         
             ]
         },
         {
@@ -24,6 +24,7 @@ const GAME_CONFIG = {
             'interval':[0,1],//monster emitting interval
             'enemies_types':[
                 'Enemy1',
+                'Enemy3',
 				'Enemy2'
             ]
         },
