@@ -36,6 +36,7 @@ class Game extends Phaser.State {
 
   constructor() {
     super();
+    this._inventory = {};
   }
 
 
@@ -55,6 +56,19 @@ class Game extends Phaser.State {
         300, 
         this.background.height-310
         , 'wizard');
+
+    for (let i of Object.keys(this._inventory)) {
+        for (let k of ['health','mana']) {
+            try {
+                wizard[k]+=this._inventory[i].stats[k] || 0;
+                console.log(k,wizard[k]);
+            } catch (e) {
+                console.log(e);
+            }
+        }
+    }
+    wizard.init();
+
     var player = this.game.add.group();
     player.add(wizard);
     var enemies = this.game.add.group();
@@ -80,6 +94,9 @@ class Game extends Phaser.State {
     
   }
     
+  prepare(data) {
+        this._inventory = data;
+  }
 
   update() {
     if (this.game.input.activePointer.isDown) {

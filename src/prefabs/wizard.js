@@ -2,10 +2,15 @@
 var Wizard = function(game,x,y,resource) {
     Phaser.Sprite.call(this, game,x,y,resource);
     game.physics.enable(this, Phaser.Physics.ARCADE);
-
     this.health =  100;
-    this.mana =  100;
+    this.mana_max =  100;
+    this.mana =  this.mana_max;
     //this.constructor.prototype.mana_regain = 20;
+
+    this.init =function() {
+        this.gui.health.setText(this.health);
+        this.gui.mana.setText(parseInt(this.mana));
+    }
 
     this.gui = {};
     this.getHit = function(damage) {
@@ -35,8 +40,8 @@ var Wizard = function(game,x,y,resource) {
       if (this.mana<100) {
           this.mana = this.mana + this.mana_regain*t;
           this.gui.mana.setText(parseInt(this.mana));
-      } else if (this.mana>100) {
-          this.mana = 100;
+      } else if (this.mana>this.mana_max) {
+          this.mana = this.mana_max;
           this.gui.mana.setText(parseInt(this.mana));
       }
     }
@@ -44,6 +49,10 @@ var Wizard = function(game,x,y,resource) {
     game.add.existing(this);
     this.immovable = true;
     this.body.moves = false;
+
+
+    this.inventory = [];
+
 }
 Wizard.prototype = Object.create(Phaser.Sprite.prototype);
 Wizard.prototype.mana_regain = 5;//Object.create(Phaser.Sprite.prototype);

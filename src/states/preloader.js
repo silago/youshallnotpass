@@ -42,6 +42,9 @@ class Preloader extends Phaser.State {
     this.game.load.image('bolt',     'assets/bolt.png');
     this.game.load.image('bolt_icon',     'assets/icons/bolt_icon.png');
     this.game.load.image('rain_icon',     'assets/icons/rain_icon.png');
+    this.game.load.image('base_hat',     'assets/items/hat1.png');
+    this.game.load.image('base_robe',     'assets/items/robe1.png');
+    this.game.load.image('border',     'assets/items/border.png');
     this.game.load.spritesheet('timer', 'assets/timer.png', 150, 20);
     this.game.load.spritesheet('orcs', 'assets/orc_spritesheet.png', 100, 100, 4);
     this.game.load.spritesheet('orcs1', 'assets/orc_spritesheet1.png', 100, 100, 4);
