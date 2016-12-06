@@ -4,6 +4,7 @@ import Wizard from '../prefabs/wizard';
 import Dot  from  '../prefabs/spells/dot';
 import Bolt  from '../prefabs/spells/bolt';
 import Rain  from '../prefabs/spells/rain';
+import Golem  from '../prefabs/spells/golem';
 import EnemyEmitter  from '../prefabs/enemyEmitter';
 import DrawProcessor  from '../prefabs/drawProcessor';
 //import 
@@ -11,17 +12,17 @@ import DrawProcessor  from '../prefabs/drawProcessor';
 const GAME_CONFIG = {
     waves:  [
         {
-            'timeout':1,//itemout before start
+            'timeout':10,//itemout before start
             'count':15,
-            'interval':[0,1],//monster emitting interval
+            'interval':[0,10],//monster emitting interval
             'enemies_types':[
                 'Enemy1'         
             ]
         },
         {
-            'timeout':1,//itemout before start
+            'timeout':10,//itemout before start
             'count':30,
-            'interval':[0,1],//monster emitting interval
+            'interval':[0,10],//monster emitting interval
             'enemies_types':[
                 'Enemy1',
                 'Enemy3',
@@ -58,7 +59,6 @@ class Game extends Phaser.State {
         for (let k of ['health','mana']) {
             try {
                 wizard[k]+=this._inventory[i].stats[k] || 0;
-                console.log(k,wizard[k]);
             } catch (e) {
                 console.log(e);
             }
@@ -77,6 +77,7 @@ class Game extends Phaser.State {
         (new Bolt(this.game,wizard,{enemies:enemies})),
         (new Rain(this.game,wizard,{enemies:enemies})),
         (new Dot(this.game,wizard,{enemies:enemies})),
+        (new Golem(this.game,wizard,{enemies:enemies})),
     ]);
     this.game.input.onDown.add(() => {
         draw_processor.activate();

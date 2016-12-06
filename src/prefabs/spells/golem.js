@@ -1,13 +1,13 @@
-var Rain = function(game,caster,data) {
+var Golem = function(game,caster,data) {
         this.data = data;
         this.points = [
                         [0,0],
-                        [1,-1],
-                        [1,1]
+                        [0,-1]
                       ];
         this.constructor.prototype.power     = 20;
         this.constructor.prototype.mana_cost = 20;
-        this.sprite='rain';
+    
+        this.sprite='golem';
         var self = this;
         this.cast=function() {
           var spell_x = game.width;
@@ -27,9 +27,20 @@ var Rain = function(game,caster,data) {
           spell.y-=parseInt(spell.height/2);
 
           game.physics.enable(spell, Phaser.Physics.ARCADE);
+
+          spell.update = (() => {
+                game.physics.arcade.collide(spell, data.enemies);
+          })
+          spell.health = 10;
           var hit_interval = setInterval(
           /*spell.update = */ () =>  {
-            if (game.physics.arcade.overlap(spell, data.enemies, (spell,enemy) => {
+             
+            if (game.physics.arcade.collide(spell, data.enemies, (spell,enemy) => {
+                spell.health--;
+                if (spell.health<0) {
+                    clearInterval(hit_interval);
+                    spell.destroy();
+                }
                 enemy.getHit(this.power);
             },function() {
               return true;
@@ -42,4 +53,4 @@ var Rain = function(game,caster,data) {
         }
       };
 
-export default Rain;
+export default Golem;

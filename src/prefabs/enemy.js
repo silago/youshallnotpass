@@ -66,7 +66,7 @@ class BaseEnemy extends Phaser.Sprite {
 class Enemy1 extends BaseEnemy{
     constructor(game, x, y, frame) {
         super(game, x, y, 'orcs1', frame);
-        this.speed = 150;
+        this.speed = 50;
         this.damage = 10;
         this.health = 25;
 		this.init();

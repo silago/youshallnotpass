@@ -85,7 +85,7 @@ var EnemyEmitter = function() {
         this.active = true;
         this.next_wave();
         this.game.time.events.loop(
-            1000,this.update,this
+            100,this.update,this
         )
     });
 }

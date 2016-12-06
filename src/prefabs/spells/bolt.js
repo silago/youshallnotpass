@@ -15,8 +15,10 @@ var Bolt = function(game,caster,data) {
           spell.body.velocity.x=2300;
           spell.update = function () {
             if (game.physics.arcade.overlap(spell, data.enemies,function(spell,enemy) {
+                    spell.body.velocity.x=0;
+                    setTimeout(()=>{
                     spell.body.position= {x:-1,y:-1};
-                    spell.kill();
+                    spell.kill();},1000);
                     enemy.getHit(self.power);
             },function(){
               return true;

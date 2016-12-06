@@ -34,12 +34,13 @@ class Preloader extends Phaser.State {
     //game.load.script('EnemyEmitter.js','src/lib/EnemyEmitter.js');
     this.game.load.image('background', 'assets/background2.png');
     this.game.load.image('wizard',     'assets/wizard.png');
-    this.game.load.image('spell',      'assets/spell.png');
+    this.game.load.image('spell',      'assets/spells/spell.png');
     this.game.load.image('circle',      'assets/circle.png');
     this.game.load.image('goblin',     'assets/goblin.png');
     this.game.load.image('eye',     'assets/eye.png');
-    this.game.load.image('rain',     'assets/rain.png');
-    this.game.load.image('bolt',     'assets/bolt.png');
+    this.game.load.image('rain',     'assets/spells/rain.png');
+    this.game.load.image('bolt',     'assets/spells/bolt.png');
+    this.game.load.image('golem',     'assets/spells/golem.png');
     this.game.load.image('bolt_icon',     'assets/icons/bolt_icon.png');
     this.game.load.image('rain_icon',     'assets/icons/rain_icon.png');
     this.game.load.image('base_hat',     'assets/items/hat1.png');
