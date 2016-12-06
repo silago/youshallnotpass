@@ -32,6 +32,10 @@ class Boot extends Phaser.State {
 
   initGlobalVariables(){
     this.game.global = {
+        exp:0,
+        set_exp:function(e) {
+            this.exp+=e;
+        }
 
     };
   }

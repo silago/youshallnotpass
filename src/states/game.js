@@ -42,10 +42,6 @@ class Game extends Phaser.State {
 
 
   create() {
-    var text = this.add.text(this.game.width * 0.5, this.game.height * 0.5, 'Game', {
-      font: '42px Arial', fill: '#ffffff', align: 'center'
-    });
-    text.anchor.set(0.5);
 
     //this.input.onDown.add(this.endGame, this);
 
@@ -93,6 +89,13 @@ class Game extends Phaser.State {
 
     this.game.add.existing(draw_processor);
     
+
+
+    this.exp_text = this.add.text(this.game.width-50, 50, '0', {
+      font: '42px Arial', fill: 'red', align: 'right'
+    });
+    this.exp_text.anchor.set(0.5);
+    
   }
     
   prepare(data) {
@@ -100,6 +103,7 @@ class Game extends Phaser.State {
   }
 
   update() {
+    this.exp_text.text = this.game.global.exp;
     if (this.game.input.activePointer.isDown) {
         //processDrawing();
     }

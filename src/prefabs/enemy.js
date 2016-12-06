@@ -12,6 +12,7 @@ class BaseEnemy extends Phaser.Sprite {
 
         this.attack_cooldown = 1*1000;
         this.attack_timer    = 0;
+        this.exp    = 1;
 
         this.animations.add('walk');
         this.animations.play('walk',2,true);
@@ -33,6 +34,7 @@ class BaseEnemy extends Phaser.Sprite {
         this.health-=damage;
         this.indicator.timerTick(damage);
         if (this.health<=0) {
+            this.game.global.set_exp(this.exp);
             this.destroy();
         }
     }
