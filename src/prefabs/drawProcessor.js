@@ -74,11 +74,11 @@ class DrawProcessor extends Phaser.Sprite {
 
         this.points = [];
         this.check();
-        this.bmd.clear();
-        this.bmd.ctx.beginPath();
     }
 
     activate() {
+        this.bmd.clear();
+        this.bmd.ctx.beginPath();
 
         this.graphics.beginFill(0xFF3300);
         this.graphics.clear();
@@ -102,7 +102,7 @@ class DrawProcessor extends Phaser.Sprite {
         var min_diff = 15;
         if (this.path.length==0) {
             this.path.push([x,y]);
-            this.point(x,y);
+            this.makePoint(x,y);
             return;
         }
 
@@ -110,7 +110,7 @@ class DrawProcessor extends Phaser.Sprite {
         var old = this.path[this.path.length-1];
         if (Math.abs(old[0]-x)+Math.abs(old[1]-y)>15) {
             this.path.push([x,y]);
-            this.point(x,y);
+            this.makePoint(x,y);
             return;
         } else {
         }
@@ -119,10 +119,10 @@ class DrawProcessor extends Phaser.Sprite {
 
     }
 
-    point(x,y,color=0xFF00FF) {
+    makePoint(x,y,color=0xFF00FF,size=10) {
 
                                         this.graphics.beginFill(color, 10);
-                                        this.graphics.drawCircle(x, y, 10);
+                                        this.graphics.drawCircle(x, y, size);
     }
 
 
@@ -139,29 +139,67 @@ class DrawProcessor extends Phaser.Sprite {
         }
     }
 
-    check() {
-        if (this.path.length<2) return;
-        var result = [0,0];
-        this.graphics.clear();
+    reducePath(points,diff=0) {
+        var result=[];
         var prevdirx = 0;
         var prevdiry = 0;
-        for (let i in this.path) {
+        for (let i in points) {
             if (i==0) continue;
-            let prevpoint = this.path[i-1];
-            var point = this.path[i];
-            var dirx = this.getDir(point[0],prevpoint[0],2); 
-            var diry = this.getDir(point[1],prevpoint[1],1); 
+            let prevpoint = points[i-1];
+            var point = points[i];
+            var dirx = this.getDir(point[0],prevpoint[0],diff); 
+            var diry = this.getDir(point[1],prevpoint[1],diff); 
+            if (diry!=prevdiry || dirx!=prevdirx) {
+                //console.log(dirx,diry);
+                prevdirx = dirx;
+                prevdiry = diry;
+                result.push(point);
+            } 
+        }
+        return result;
+    }
+    reducePoints(points,diff=0,draw=false) {
+        var result = [];
+
+        var prevdirx = 0;
+        var prevdiry = 0;
+        for (let i in points) {
+            if (i==0) continue;
+            let prevpoint = points[i-1];
+            var point = points[i];
+            var dirx = this.getDir(point[0],prevpoint[0],9); 
+            var diry = this.getDir(point[1],prevpoint[1],9); 
             if (diry!=prevdiry || dirx!=prevdirx) {
                 console.log(dirx,diry);
                 prevdirx = dirx;
                 prevdiry = diry;
                 result.push([dirx,diry]);
-                this.point(point[0],point[1],0x00FF00);
+                if (draw) {
+                    this.makePoint(point[0],point[1],0x00FF00);
+                }
             } 
         }
-        console.log(result.toString());
-        this.point(point[0],point[1],0x00FF00);
-    
+        return result;
+    }
+
+    check() {
+        if (this.path.length<2) return;
+        var result = [0,0];
+        var start = this.path[0];
+        var end = this.path[this.path.length-1];
+        //var result = this.reducePoints(this.path,9,true);        
+        var _ = [].concat((this.reducePath(this.path,0)),[end]);
+        for (var p of _) {
+                this.makePoint(p[0],p[1],0x00FF00);
+        }
+        //var _ = (this.reducePath(_,0));
+        //for (var p of _) {
+        //        this.makePoint(p[0],p[1],0x00000,5);
+        //}
+        //result = this.reducePoints(result,0);        
+
+        //this.makePoint(point[0],point[1],0x00FF00);
+        var result = [].concat([0,0],this.reducePoints(_,0));
         for (var points_counter in this.spellbook) {
                 console.log (this.spellbook[points_counter].points.toString() , '>>',result.toString());
                 if (this.spellbook[points_counter].points.toString() == result.toString()) {
