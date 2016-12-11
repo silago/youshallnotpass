@@ -39,6 +39,8 @@ class Preloader extends Phaser.State {
     this.game.load.image('goblin',     'assets/goblin.png');
     this.game.load.image('eye',     'assets/eye.png');
     this.game.load.image('rain',     'assets/spells/rain.png');
+    this.game.load.image('laser2',     'assets/spells/laser2.png');
+    this.game.load.image('laser1',     'assets/spells/laser1.png');
     this.game.load.image('bolt',     'assets/spells/bolt.png');
     this.game.load.image('golem',     'assets/spells/golem.png');
     this.game.load.image('bolt_icon',     'assets/icons/bolt_icon.png');

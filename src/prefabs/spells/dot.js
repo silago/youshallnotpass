@@ -4,7 +4,7 @@ var Dot = function(game,caster,data) {
         this.sprite='spell';
         this.points = [
             [0,0],
-            [0,1]
+            [1,0]
         ]
         var self = this;
         this.cast=function() {

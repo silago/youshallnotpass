@@ -4,6 +4,7 @@ import Wizard from '../prefabs/wizard';
 import Dot  from  '../prefabs/spells/dot';
 import Bolt  from '../prefabs/spells/bolt';
 import Rain  from '../prefabs/spells/rain';
+import Laser  from '../prefabs/spells/laser';
 import Golem  from '../prefabs/spells/golem';
 import EnemyEmitter  from '../prefabs/enemyEmitter';
 import DrawProcessor  from '../prefabs/drawProcessor';
@@ -78,6 +79,7 @@ class Game extends Phaser.State {
         (new Rain(this.game,wizard,{enemies:enemies})),
         (new Dot(this.game,wizard,{enemies:enemies})),
         (new Golem(this.game,wizard,{enemies:enemies})),
+        (new Laser(this.game,wizard,{enemies:enemies})),
     ]);
     this.game.input.onDown.add(() => {
         draw_processor.activate();

@@ -4,7 +4,7 @@ var Golem = function(game,caster,data) {
                         [0,0],
                         [0,-1]
                       ];
-        this.constructor.prototype.power     = 20;
+        this.constructor.prototype.power     = 220;
         this.constructor.prototype.mana_cost = 20;
     
         this.sprite='golem';
@@ -13,7 +13,7 @@ var Golem = function(game,caster,data) {
           var spell_x = game.width;
           for (var i in data.enemies.children) {
             if (data.enemies.children[i].x<spell_x) {
-              spell_x = data.enemies.children[i].x;
+              spell_x = data.enemies.children[i].x-(data.enemies.children[i].width*2);
             }
           }
 
@@ -23,33 +23,43 @@ var Golem = function(game,caster,data) {
             caster.position.y,
             this.sprite);
             spell.x+=spell.width/2;
-          spell.x-=parseInt(spell.width/2);
+          spell.x-=parseInt(spell.width/2)-20;
           spell.y-=parseInt(spell.height/2);
+          spell.cooldown = 0;
+
 
           game.physics.enable(spell, Phaser.Physics.ARCADE);
 
-          spell.update = (() => {
-                game.physics.arcade.collide(spell, data.enemies);
-          })
-          spell.health = 10;
-          var hit_interval = setInterval(
-          /*spell.update = */ () =>  {
-             
-            if (game.physics.arcade.collide(spell, data.enemies, (spell,enemy) => {
-                spell.health--;
-                if (spell.health<0) {
-                    clearInterval(hit_interval);
-                    spell.destroy();
+          spell.update = function() {
+           var can_contact = false;
+            if (spell.cooldown <= 0 ) {
+                spell.cooldown = 1000;
+                can_contact = true;
+            } else {
+                spell.cooldown-=game.time.elapsed;
+            } 
+
+            game.physics.arcade.collide(spell, data.enemies, (spell,enemy) => {
+                if (can_contact) {
+                    spell.health--;
+                    if (spell.health<0) {
+                        spell.position.x = -1;
+                        spell.position.y = -1;
+                        spell.destroy();
+                    }
+                    enemy.getHit(this.power);
+                    console.log('golem hit');
                 }
-                enemy.getHit(this.power);
-            },function() {
-              return true;
-            },this));
-          },500);
+            });
+          }
+          spell.health = 10;
+          spell.body.moves = false;
+
           setTimeout(function() {
-            clearInterval(hit_interval);
+            spell.position.x = -1;
+            spell.position.y = -1;
             spell.destroy();
-          },2000);
+          },5000);
         }
       };
 
