@@ -5,8 +5,8 @@ var Rain = function(game,caster,data) {
                         [1,-1],
                         [1,1]
                       ];
-        this.constructor.prototype.power     = 20;
-        this.constructor.prototype.mana_cost = 20;
+        this.constructor.prototype.power     = 2;
+        this.constructor.prototype.mana_cost = 8;
         this.sprite='rain';
         var self = this;
         this.cast=function() {
@@ -38,7 +38,7 @@ var Rain = function(game,caster,data) {
           setTimeout(function() {
             clearInterval(hit_interval);
             spell.destroy();
-          },2000);
+          },1000);
         }
       };
 

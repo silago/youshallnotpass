@@ -66,9 +66,9 @@ class BaseEnemy extends Phaser.Sprite {
 class Enemy1 extends BaseEnemy{
     constructor(game, x, y, frame) {
         super(game, x, y, 'orcs1', frame);
-        this.speed = 50;
+        this.speed = 200;
         this.damage = 10;
-        this.health = 25;
+        this.health = 4;
 		this.init();
     }
 }
@@ -77,9 +77,9 @@ class Enemy1 extends BaseEnemy{
 class Enemy2 extends BaseEnemy { 
     constructor(game, x, y, frame) {
         super(game, x, y, 'orcs2', frame);
-        this.speed = 80;
+        this.speed = 100;
 		this.damage = 10;
-        this.health = 50;
+        this.health = 10;
         this.init();
     }
 }
@@ -88,9 +88,9 @@ class Enemy2 extends BaseEnemy {
 class Enemy3 extends BaseEnemy { 
     constructor(game, x, y, frame) {
         super(game, x, y, 'orcs3', frame);
-        this.speed = 20;
+        this.speed = 250;
 		this.damage = 10;
-        this.health = 20;
+        this.health = 6;
         this.vertical_offset = 120
         this.init();
     }

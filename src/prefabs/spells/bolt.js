@@ -5,8 +5,8 @@ var Bolt = function(game,caster,data) {
                         [1,-1]
                       ];
         this.sprite='bolt';
-        this.constructor.prototype.power     = 25;
-        this.constructor.prototype.mana_cost = 20;
+        this.constructor.prototype.power     = 6;
+        this.constructor.prototype.mana_cost = 2;
         var self = this;
         this.cast=function() {
           if (!caster.takeMana(this.mana_cost)) return;

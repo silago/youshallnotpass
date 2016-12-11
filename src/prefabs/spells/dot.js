@@ -1,6 +1,6 @@
 var Dot = function(game,caster,data) {
-        this.constructor.prototype.power     = 9;
-        this.constructor.prototype.mana_cost = 10;
+        this.constructor.prototype.power     = 2;
+        this.constructor.prototype.mana_cost = 0;
         this.sprite='spell';
         this.points = [
             [0,0],

@@ -14,20 +14,46 @@ const GAME_CONFIG = {
     waves:  [
         {
             'timeout':10,//itemout before start
-            'count':15,
-            'interval':[0,10],//monster emitting interval
+            'count':5,
+            'interval':[25,25],//monster emitting interval
             'enemies_types':[
                 'Enemy1'         
             ]
         },
-        {
+		  {
             'timeout':10,//itemout before start
-            'count':30,
-            'interval':[0,10],//monster emitting interval
+            'count':10,
+            'interval':[15,20],//monster emitting interval
+            'enemies_types':[
+                'Enemy1'         
+            ]
+        },
+		{
+            'timeout':10,//itemout before start
+            'count':15,
+            'interval':[15,15],//monster emitting interval
             'enemies_types':[
                 'Enemy1',
-                'Enemy3',
 				'Enemy2'
+            ]
+        },
+        {
+            'timeout':15,//itemout before start
+            'count':20,
+            'interval':[15,15],//monster emitting interval
+            'enemies_types':[
+                'Enemy1',
+				'Enemy2'
+            ]
+        },
+		 {
+            'timeout':15,//itemout before start
+            'count':25,
+            'interval':[15,15],//monster emitting interval
+            'enemies_types':[
+                'Enemy1',
+				'Enemy2',
+				'Enemy3'
             ]
         },
 
