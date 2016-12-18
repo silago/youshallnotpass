@@ -1,7 +1,9 @@
 //import Crosshairs from '../prefabs/crosshairs';
+//import Crosshairs from '../prefabs/crosshairs';
 //import Target from '../prefabs/target';
 import Wizard from '../prefabs/wizard';
 import Dot  from  '../prefabs/spells/dot';
+import UpDot  from  '../prefabs/spells/upDot';
 import Bolt  from '../prefabs/spells/bolt';
 import Rain  from '../prefabs/spells/rain';
 import Laser  from '../prefabs/spells/laser';
@@ -104,6 +106,7 @@ class Game extends Phaser.State {
         (new Bolt(this.game,wizard,{enemies:enemies})),
         (new Rain(this.game,wizard,{enemies:enemies})),
         (new Dot(this.game,wizard,{enemies:enemies})),
+        (new UpDot(this.game,wizard,{enemies:enemies})),
         (new Golem(this.game,wizard,{enemies:enemies})),
         (new Laser(this.game,wizard,{enemies:enemies})),
     ]);

@@ -153,7 +153,7 @@ class DrawProcessor extends Phaser.Sprite {
                 //console.log(dirx,diry);
                 prevdirx = dirx;
                 prevdiry = diry;
-                result.push(point);
+                result.push(prevpoint);
             } 
         }
         return result;
@@ -188,7 +188,7 @@ class DrawProcessor extends Phaser.Sprite {
         var start = this.path[0];
         var end = this.path[this.path.length-1];
         //var result = this.reducePoints(this.path,9,true);        
-        var _ = [].concat((this.reducePath(this.path,0)),[end]);
+        var _ = [].concat((this.reducePath(this.path,3)),[end]);
         for (var p of _) {
                 this.makePoint(p[0],p[1],0x00FF00);
         }
@@ -199,7 +199,7 @@ class DrawProcessor extends Phaser.Sprite {
         //result = this.reducePoints(result,0);        
 
         //this.makePoint(point[0],point[1],0x00FF00);
-        var result = [].concat([0,0],this.reducePoints(_,0));
+        var result = [].concat([0,0],this.reducePoints(_,5));
         for (var points_counter in this.spellbook) {
                 console.log (this.spellbook[points_counter].points.toString() , '>>',result.toString());
                 if (this.spellbook[points_counter].points.toString() == result.toString()) {
